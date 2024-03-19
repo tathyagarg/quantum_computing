@@ -39,16 +39,20 @@ GATES = {
 }
 
 def matmul(x: list[list[complex]], y: list[list[complex]]):
-    x_height, y_height = len(x), len(y)
-    y_width = len(y[0])
+    x_height = len(x)
+    y_height, y_width = len(y), (len(y[0]) if isinstance(y, list) else 1)
     res = [[0 for _ in range(y_width)] for _ in range(x_height)]
 
     for i in range(x_height):
         for j in range(y_width):
             for k in range(y_height):
+                print(k, j)
                 res[i][j] += x[i][k] * y[k][j]
 
     return res
 
 def apply_gate(key, values):
     return matmul(GATES[key], values)
+
+def unpack(*vals):
+    return [i[0] for i in vals]
