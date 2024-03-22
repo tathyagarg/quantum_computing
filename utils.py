@@ -1,5 +1,14 @@
 import math
 
+"""
+NOTE:
+
+Comments referring to 'the paper' are referring to: 
+Peter W. Shor's paper titled 'Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer'
+
+Much of this project is based off the studies presented in the paper.
+"""
+
 root2 = math.sqrt(2)
 inv_root2 = 1/root2
 
@@ -36,8 +45,7 @@ GATES = {
     'H': [[inv_root2, inv_root2], [inv_root2, -inv_root2]],
     'SWAP': [[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 0], [0, 0, 0, 1]],
     'CCNOT': [[1, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 1, 0]],
-    'F': [[1, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 0, 0, 1]]
-    # ^^ Fredkin gate as describe in Peter W. Shor's Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer, page 9
+    'F': [[1, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 0, 0, 1]], # Fredkin gate as describe in page 9 of the paper
 }
 
 def matmul(x: list[list[complex]], y: list[list[complex]]):
@@ -58,3 +66,6 @@ def apply_gate(key, values):
 
 def unpack(*vals):
     return [i[0] for i in vals]
+
+def qft():
+    ...

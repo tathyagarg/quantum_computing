@@ -1,0 +1,1 @@
+Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer - Peter W. Shor --> https://arxiv.org/pdf/quant-ph/9508027.pdf

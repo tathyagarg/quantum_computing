@@ -6,7 +6,7 @@ class Qubit:
     def __init__(self, *weights) -> None:
         self.W: list[complex] = [[w] for w in weights]
 
-        self.digits = int(math.log2(len(self.W)))
+        self.digit_count = int(math.log2(len(self.W)))  # number of digits
 
     def measure(self):
         probs: list[complex] = [abs(w[0])**2 for w in self.W]
@@ -21,8 +21,8 @@ class Qubit:
         
     def __repr__(self) -> str:
         result = ''
-        for binary in range(2**self.digits):
-            result += f'{self.W[binary][0]}|{bin(binary)[2:]:<0{self.digits}}⟩ + '
+        for binary in range(2**self.digit_count):
+            result += f'{self.W[binary][0]}|{bin(binary)[2:]:<0{self.digit_count}}⟩ + '
 
         return result[:-3]
     
@@ -31,6 +31,14 @@ class Qubit:
     
     def __len__(self):
         return len(self.W)
+    
+class DefinedQubit(Qubit):
+    def __init__(self, integer, digit_count=0) -> None:
+        self.digit_count = digit_count or math.ceil(math.log2(integer))  # `l` from the paper
+        weights = [i == integer for i in range(self.digit_count)]
+
+        super().__init__(*weights)
+        self.digits = list(map(int, bin(integer)[2:]))
 
 def factor(matrix):
     length = len(matrix)
