@@ -1,1 +1,4 @@
-Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer - Peter W. Shor --> https://arxiv.org/pdf/quant-ph/9508027.pdf
+A lot of these sources can be found on arxiv.org, an open-source repository of e-prints, owned by Cornell University
+
+"Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer" by Peter W. Shor --> https://arxiv.org/pdf/quant-ph/9508027.pdf
+"D.3 Shor" by University of Tennessee, Knoxville - based off "An Introduction to Quantum Computing for Non-Physicists" by Eleanor Rieffel and Wolfgang Polak --> https://web.eecs.utk.edu/~bmaclenn/Classes/494-594-UC-F13/handouts/LNUC-III.D.3.pdf
