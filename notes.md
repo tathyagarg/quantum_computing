@@ -8,5 +8,6 @@
 8. After measuring,|phi_2> = ((1/Z) * sum over x in naturals of f(x)|x>) * |g*>
 9. Apply QFT to get |phi_3> = U_QFT ((1/Z) * sum over x in naturals of f(x)|x>) = (1/Z) * (sum over x{hat} of f{hat}(x{hat})|x{hat}>) and |g*> has been omitted
 10. If r divides N, all non-zero components of f{hat} will be at multiples of N/r
-11. Otherwise, the 
+11. Otherwise, the amplitudes will be concentrated near |kN/r>
+12. Measure the state (1/Z) * (sum over x{hat} in naturals of f{hat}(x{hat})|x{hat}>)
 12. If r | N, nu = |kN/r> for k in Naturals => k/r = nu/N
