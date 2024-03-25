@@ -11,3 +11,4 @@
 11. Otherwise, the amplitudes will be concentrated near |kN/r>
 12. Measure the state (1/Z) * (sum over x{hat} in naturals of f{hat}(x{hat})|x{hat}>)
 12. If r | N, nu = |kN/r> for k in Naturals => k/r = nu/N
+13. Otherwise, we can make a guess by using continued fraction expansion.

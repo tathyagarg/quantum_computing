@@ -40,21 +40,53 @@ class DefinedQubit(Qubit):
         super().__init__(*weights)
         self.digits = list(map(int, bin(integer)[2:]))
 
+class State:
+    def __init__(self, qubits: list[Qubit | DefinedQubit] | int) -> None:
+        if isinstance(qubits, int):
+            self.qubits = [Qubit()]
+
 def factor(matrix):
     length = len(matrix)
 
     if length == 2:
         return Qubit(*unpack(*matrix))
     elif length == 4:
+        """
+            We know because of the properties of a Qubit,
+                |alpha_a|^2 + |beta_a|^2 = 1     --(1)
+                |alpha_b|^2 + |beta_b|^2 = 1     --(2)
+            
+            Our input matrix = [alpha_a*alpha_b, alpha_a*beta_b, beta_a*alpha_b, beta_a*beta_b] = [alpha_a, beta_a] (tensor-product) [alpha_b, beta_b]
+            Let w = alpha_a * alpha_b,
+                x = alpha_a * beta_b,
+                y = bete_a * alpha_b,
+                z = bete_a * beta_b (Irrelevant in our calculations)
+
+            Computing |w|^2 + |x|^2, we get |alpha_a|^2 => |alpha_a| = sqrt( |w|^2 + |x|^2 )
+            Similarly, we get |alpha_b| = sqrt( |w|^2 + |y|^2 )
+            
+            From Equation (1),
+                |beta_a|^2 = 1 - |alpha_a|^2
+                => |beta_a| = sqrt(1 - |alpha_a|^2)
+            Similarly from Equation (2),
+                |beta_b| = sqrt(1 - |alpha_b|^2)
+        """
+
         w, x, y, z = unpack(*matrix)
-        alpha_a = w + x
-        alpha_b = w + y
 
-        beta_a = 1 - alpha_a
-        beta_b = 1 - alpha_b
+        w = abs(w) ** 2
+        x = abs(x) ** 2
+        y = abs(y) ** 2
+        
+        alpha_a_sqr = w + x
+        alpha_b_sqr = w + y
 
-        return Qubit(alpha_a, beta_a), Qubit(alpha_b, beta_b)
+        beta_a = (1 - alpha_a_sqr) ** 1/2
+        beta_b = (1 - alpha_b_sqr) ** 1/2
+
+        return Qubit(alpha_a_sqr ** 1/2, beta_a), Qubit(alpha_b_sqr ** 1/2, beta_b)
     elif length == 8:
+        # TODO
         a, b, c, d, e, f, g, h = unpack(*matrix)
 
         alpha_a = e / (h + e) if h + e != 0 else (d / (a + d) if a + d != 0 else 0)
@@ -71,7 +103,7 @@ def factor(matrix):
 
 a, b, c, d = Qubit(0, 1), Qubit(0, 1), Qubit(1/2, 0, 1/2, 0), Qubit(0, 1)
 
-print(factor(apply_gate('H', a)).measure())
+print(factor(apply_gate('CNOT', tensor_product(a, b))).measure())  # TODO, make qubits with multiple digits (isnt this just a basis?)
 
 # print(f"{a = }\n{b = }\n{d = }\n")
 # a, b, d = factor(apply_gate('CCNOT', tensor_product(a, b, d)))

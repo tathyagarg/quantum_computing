@@ -1,5 +1,7 @@
-A lot of these sources can be found on arxiv.org, an open-source repository of e-prints, owned by Cornell University
+A lot of these sources can be found on Cornell University's arxiv.org, an open-source repository of e-prints
 
 "Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer" by Peter W. Shor --> https://arxiv.org/pdf/quant-ph/9508027.pdf
 "D.3 Shor" by University of Tennessee, Knoxville - based off "An Introduction to Quantum Computing for Non-Physicists" by Eleanor Rieffel and Wolfgang Polak --> https://web.eecs.utk.edu/~bmaclenn/Classes/494-594-UC-F13/handouts/LNUC-III.D.3.pdf
 "An Introduction to Quantum Computing for Non-Physicists" by Eleanor Rieffel and Wolfgang Polak --> https://arxiv.org/pdf/quant-ph/9809016.pdf
+"An Introduction to the Theory of Numbers" by Ivan Niven, Herbert S. Zuckerman and Hugh L. Montgomery --> https://undergraduatemaths.files.wordpress.com/2017/12/ivan_niven_herbert_s-_zuckerman_hugh_l-_montgoman-introduction-to-the-theory-of-numbers.pdf
+"Continued Fractions" by Temple University --> https://www.math.temple.edu/~yury/calendar/node2.html
