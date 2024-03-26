@@ -62,6 +62,14 @@ class State:
 
 
 def factor(matrix):
+    def transform(n):
+        """
+            This function can be defined as
+                f(x) = |x|^2
+            And helps in calculating probabilities.
+        """
+        return abs(n) ** 2
+
     length = len(matrix)
 
     if length == 2:
@@ -88,11 +96,7 @@ def factor(matrix):
                 |beta_b| = sqrt(1 - |alpha_b|^2)
         """
 
-        w, x, y, z = unpack(*matrix)
-
-        w = abs(w) ** 2
-        x = abs(x) ** 2
-        y = abs(y) ** 2
+        w, x, y, z = list(map(transform, unpack(*matrix)))
         
         alpha_a_sqr = w + x
         alpha_b_sqr = w + y
@@ -103,23 +107,23 @@ def factor(matrix):
         return Qubit(alpha_a_sqr ** 0.5, beta_a), Qubit(alpha_b_sqr ** 0.5, beta_b)
     elif length == 8:
         # TODO
-        a, b, c, d, e, f, g, h = unpack(*matrix)
+        a, b, c, d, e, f, g, h = list(map(transform, unpack(*matrix)))
 
-        alpha_a = e / (h + e) if h + e != 0 else (d / (a + d) if a + d != 0 else 0)
-        alpha_b = f / (h + f) if h + f != 0 else (c / (a + c) if a + c != 0 else 0)
-        alpha_c = g / (h + g) if h + g != 0 else (b / (a + b) if a + b != 0 else 0)
+        alpha_a = (a + b + c + d) ** 0.5
+        alpha_b = (a + b + e + f) ** 0.5
+        alpha_c = (a + c + e + g) ** 0.5
 
-        beta_a = 1 - alpha_a
-        beta_b = 1 - alpha_b
-        beta_c = 1 - alpha_c
+        beta_a = (1 - (alpha_a ** 2)) ** 0.5
+        beta_b = (1 - (alpha_b ** 2)) ** 0.5
+        beta_c = (1 - (alpha_c ** 2)) ** 0.5
 
         return Qubit(alpha_a, beta_a), Qubit(alpha_b, beta_b), Qubit(alpha_c, beta_c)
     else:
         raise Exception("Unsupported operation.")
 
-a, b, c, d = Qubit(0, 1), Qubit(0, 1), Qubit(1/2, 0, 1/2, 0), Qubit(0, 1)
+a, b, c, d = Qubit(0, 1), Qubit(0, 1), Qubit(0, 1), Qubit(0, 1)
 
-print(a, b, State(factor(apply_gate('CNOT', tensor_product(a, b)))).measure(), sep='\n')  # TODO, make qubits with multiple digits (isnt this just a basis?)
+print(State(factor(apply_gate('CCNOT', tensor_product(a, b, c)))).measure(), sep='\n')  # TODO, make qubits with multiple digits (isnt this just a basis?)
 
 # print(f"{a = }\n{b = }\n{d = }\n")
 # a, b, d = factor(apply_gate('CCNOT', tensor_product(a, b, d)))
