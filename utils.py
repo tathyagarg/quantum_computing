@@ -56,7 +56,6 @@ def matmul(x: list[list[complex]], y: list[list[complex]]):
     for i in range(x_height):
         for j in range(y_width):
             for k in range(y_height):
-                print(k, j)
                 res[i][j] += x[i][k] * y[k][j]
 
     return res

@@ -43,7 +43,23 @@ class DefinedQubit(Qubit):
 class State:
     def __init__(self, qubits: list[Qubit | DefinedQubit] | int) -> None:
         if isinstance(qubits, int):
-            self.qubits = [Qubit()]
+            self.qubits = [Qubit([(0, 1), (1, 0)][i == '0']) for i in bin(qubits)[2:]]
+        else:
+            self.qubits = list(qubits)
+
+    def measure(self, bits=None):
+        if isinstance(bits, (list, tuple)) or bits is None:
+            target = bits or range(len(self.qubits))
+            for i in target:
+                self.qubits[i] = self.qubits[i].measure()
+        else:
+            self.qubits[bits] = self.qubits[bits].measure()
+
+        return self
+    
+    def __repr__(self) -> str:
+        return str(self.qubits)
+
 
 def factor(matrix):
     length = len(matrix)
@@ -81,10 +97,10 @@ def factor(matrix):
         alpha_a_sqr = w + x
         alpha_b_sqr = w + y
 
-        beta_a = (1 - alpha_a_sqr) ** 1/2
-        beta_b = (1 - alpha_b_sqr) ** 1/2
+        beta_a = (1 - alpha_a_sqr) ** 0.5
+        beta_b = (1 - alpha_b_sqr) ** 0.5
 
-        return Qubit(alpha_a_sqr ** 1/2, beta_a), Qubit(alpha_b_sqr ** 1/2, beta_b)
+        return Qubit(alpha_a_sqr ** 0.5, beta_a), Qubit(alpha_b_sqr ** 0.5, beta_b)
     elif length == 8:
         # TODO
         a, b, c, d, e, f, g, h = unpack(*matrix)
@@ -103,7 +119,7 @@ def factor(matrix):
 
 a, b, c, d = Qubit(0, 1), Qubit(0, 1), Qubit(1/2, 0, 1/2, 0), Qubit(0, 1)
 
-print(factor(apply_gate('CNOT', tensor_product(a, b))).measure())  # TODO, make qubits with multiple digits (isnt this just a basis?)
+print(a, b, State(factor(apply_gate('CNOT', tensor_product(a, b)))).measure(), sep='\n')  # TODO, make qubits with multiple digits (isnt this just a basis?)
 
 # print(f"{a = }\n{b = }\n{d = }\n")
 # a, b, d = factor(apply_gate('CCNOT', tensor_product(a, b, d)))
