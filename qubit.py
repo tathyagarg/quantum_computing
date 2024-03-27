@@ -77,36 +77,59 @@ def factor(matrix):
     elif length == 4:
         """
             We know because of the properties of a Qubit,
-                |alpha_a|^2 + |beta_a|^2 = 1     --(1)
-                |alpha_b|^2 + |beta_b|^2 = 1     --(2)
+                |alpha_n|^2 + |beta_n|^2 = 1  --(2)
+            For any n
             
-            Our input matrix = [alpha_a*alpha_b, alpha_a*beta_b, beta_a*alpha_b, beta_a*beta_b] = [alpha_a, beta_a] (tensor-product) [alpha_b, beta_b]
-            Let w = alpha_a * alpha_b,
-                x = alpha_a * beta_b,
-                y = bete_a * alpha_b,
-                z = bete_a * beta_b (Irrelevant in our calculations)
+            Our input matrix = [a1*a2, a1*b2, b1*a2, b1*b2] = [a1, b1] (tensor-product) [a2, b2]
+            Let w = a1 * a2,
+                x = a1 * b2,
+                y = bete_1 * a2,
+                z = bete_1 * b2 (Irrelevant in our calculations)
 
-            Computing |w|^2 + |x|^2, we get |alpha_a|^2 => |alpha_a| = sqrt( |w|^2 + |x|^2 )
-            Similarly, we get |alpha_b| = sqrt( |w|^2 + |y|^2 )
+            Computing |w|^2 + |x|^2, we get |a1|^2 => |a1| = sqrt( |w|^2 + |x|^2 )
+            Similarly, we get |a2| = sqrt( |w|^2 + |y|^2 )
             
-            From Equation (1),
-                |beta_a|^2 = 1 - |alpha_a|^2
-                => |beta_a| = sqrt(1 - |alpha_a|^2)
-            Similarly from Equation (2),
-                |beta_b| = sqrt(1 - |alpha_b|^2)
+            From Equation (1) with n = 1,
+                |b1|^2 = 1 - |a1|^2
+                => |b1| = sqrt(1 - |a1|^2)
+            Similarly with n = 2,
+                |b2| = sqrt(1 - |a2|^2)
         """
 
         w, x, y, z = list(map(transform, unpack(*matrix)))
         
-        alpha_a_sqr = w + x
-        alpha_b_sqr = w + y
+        a1_sqr = w + x
+        a2_sqr = w + y
 
-        beta_a = (1 - alpha_a_sqr) ** 0.5
-        beta_b = (1 - alpha_b_sqr) ** 0.5
+        b1 = (1 - a1_sqr) ** 0.5
+        b2 = (1 - a2_sqr) ** 0.5
 
-        return Qubit(alpha_a_sqr ** 0.5, beta_a), Qubit(alpha_b_sqr ** 0.5, beta_b)
+        return Qubit(a1_sqr ** 0.5, b1), Qubit(a2_sqr ** 0.5, b2)
     elif length == 8:
-        # TODO
+        """
+            Let a = a1 * a2 * a3, b = a1 * a2 * b3,
+                c = a1 * b2 * a3, d = a1 * b2 * b3,
+                e = b1 * a2 * a3, f = b1 * a2 * b3,
+                g = b1 * b2 * a3, h = b1 * b2 * b3,
+            Map f(x) = |x|^2 to each of the variables a, b, c, d, e, f, g, h
+            We see that:
+                a + b = |a1 * a2 * a3|^2 + |a1 * a2 * b3|^2
+                = |a1 * a2|^2 (|a3|^2 + |b3|^2)
+                = |a1 * a2|^2
+            Similarly,
+                c + d = |a1 * b2|^2
+                e + f = |b1 * a2|^2
+                a + c = |a1 * a3|^2
+                e + g = |b1 * a3|^2
+            Adding,
+                a + b + c + d = |a1|^2
+                a + b + e + f = |a2|^2
+                a + c + e + g = |a3|^2
+            From this,
+                |b1| = sqrt( 1 - |a1|^2 ),
+                |b2| = sqrt( 1 - |a2|^2 ),
+                |b3| = sqet( 1 - |a3|^2 )
+        """
         a, b, c, d, e, f, g, h = list(map(transform, unpack(*matrix)))
 
         alpha_a = (a + b + c + d) ** 0.5
